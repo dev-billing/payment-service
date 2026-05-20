@@ -17,6 +17,15 @@ public class PaymentController {
 
     private final PaymentApplicationService paymentApplicationService;
 
+    /**
+     * 결제 처리
+     * @apiScope external
+     *
+     * 전달받은 결제 요청을 처리하고 결제 결과를 반환합니다.
+     * 결제 실패 시 사유 코드와 함께 오류 응답이 반환됩니다.
+     *
+     * @return 결제 처리 결과 (결제 ID, 승인 시각, 승인 번호 등)
+     */
     @PostMapping
     public ApiResponse<PaymentResponseDto> payment(@RequestBody PaymentRequestDto paymentRequestDto) {
         return ApiResponse.ok(paymentApplicationService.payment(paymentRequestDto));
