@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/payments")
+@RequestMapping("/internal/payments")
 public class PaymentController {
 
     private final PaymentApplicationService paymentApplicationService;
@@ -24,10 +24,13 @@ public class PaymentController {
      * 전달받은 결제 요청을 처리하고 결제 결과를 반환합니다.
      * 결제 실패 시 사유 코드와 함께 오류 응답이 반환됩니다.
      *
+     * 게이트웨이가 외부 요청 /api/payments 를 내부 /internal/payments 로 변환해 전달합니다.
+     *
+     * @body request 결제 요청 정보 (예약 ID, 금액, 결제 수단)
      * @return 결제 처리 결과 (결제 ID, 승인 시각, 승인 번호 등)
      */
     @PostMapping
-    public ApiResponse<PaymentResponseDto> payment(@RequestBody PaymentRequestDto paymentRequestDto) {
-        return ApiResponse.ok(paymentApplicationService.payment(paymentRequestDto));
+    public ApiResponse<PaymentResponseDto> payment(@RequestBody PaymentRequestDto request) {
+        return ApiResponse.ok(paymentApplicationService.payment(request));
     }
 }
